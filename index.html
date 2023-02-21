@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Light Me Up</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+  <meta charset="utf-8" />
+
+  <style>
+  body {
+    margin: 0px;
+    background-color: #000000;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  #nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    font-size: 0.8em;
+    color: #ffffff;
+    padding: 0.5em;
+  }
+
+  #panel {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.8em;
+    color: #ffffff;
+    padding: 0.5em;
+  }
+
+  #panel > div {
+    margin-top: 0.5em;
+  }
+
+  #panel > div > span {
+    display: inline-block;
+    min-width: 4em;
+  }
+
+  #panel > div > button {
+    border: 1px #ffffff solid;
+    min-width: 3em;
+    background: none;
+    color: #ffffff;
+  }
+
+  #panel > div > button[lmu-selected="1"] {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  </style>
+
+  <script id="vertexShader" type="x-shader/x-vertex">
+	varying vec2 vUv;
+
+	void main() {
+		vUv = uv;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+	}
+  </script>
+  <script id="fragmentShader" type="x-shader/x-fragment">
+	uniform sampler2D baseTexture;
+	uniform sampler2D bloomTexture;
+
+	varying vec2 vUv;
+
+	void main() {
+		gl_FragColor = (texture2D(baseTexture, vUv) + vec4(1.0) * texture2D(bloomTexture, vUv));
+	}
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.141.0/three.min.js"
+    crossorigin="anonymous"
+  ></script>
+</head>
+
+<body>
+  <div id="nav">
+    <a href="#InCrowd">In Crowd</a>
+    <a href="#OnStage">On Stage</a>
+    <a href="#WithUs">With Us</a>
+  </div>
+  <video id="video" playsinline loop mute style="display:none">
+    <source src="video.mp4#t=60" type="video/mp4">
+  </video>
+  <div id="panel"></div>
+  <script src="bundle.js"></script>
+</body>
+</html>
